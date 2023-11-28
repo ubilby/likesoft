@@ -1,14 +1,14 @@
 version: '3.6' 
   
 volumes: 
-  pg: 
+  books_msql_data: 
   
 services: 
   database: 
     env_file: .env 
-    image: postgres:16.1-alpine.18
+    image: mysql:5.7
     volumes: 
-     - pg:/var/lib/postgresql/data/
+     - books_msql_data:/var/lib/mysql
   
   django_api: 
     env_file: .env 
@@ -24,15 +24,15 @@ services:
     image: redis:7.2.3-alpine3.18
     hostname: redis
 
-  worker:
-    build:
-      context: .
-    hostname: worker
-    entrypoint: celery
-    command: -A celerr.app worker --loglevel=info
-    volumes:
-      - ./backend/:/backend
-    links:
-      - redis
-    depends_on:
-      - redis
+  # worker:
+  #   build:
+  #     context: .
+  #   hostname: worker
+  #   entrypoint: celery
+  #   command: -A celerr.app worker --loglevel=info
+  #   volumes:
+  #     - ./backend/:/backend
+  #   links:
+  #     - redis
+  #   depends_on:
+  #     - redis

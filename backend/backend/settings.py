@@ -31,12 +31,12 @@ else:
         'default': {
             # Меняем настройку Django: теперь для работы будет использоваться
             # бэкенд postgresql
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('POSTGRES_DB', ''),
-            'USER': os.getenv('POSTGRES_USER', ''),
-            'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.getenv('MYSQL_DATABASE', ''),
+            'USER': os.getenv('MYSQL_USER', ''),
+            'PASSWORD': os.getenv('MYSQL_PASSWORD', ''),
             'HOST': os.getenv('DB_HOST', ''),
-            'PORT': os.getenv('DB_PORT', 5432)
+            'PORT': os.getenv('DB_PORT', 3306)
         }
     }
 
@@ -138,9 +138,13 @@ STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# settings.py
-CELERY_BROKER_URL = 'redis://6379/0'
+# redis settings
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+
+# virtual email
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')

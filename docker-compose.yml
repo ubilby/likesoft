@@ -17,22 +17,23 @@ services:
      - database 
     ports: 
      - 8000:8000
-    volumes:
-     - ./backend/:/backend
+    # volumes:
+    #  - ./backend/:/backend
+    command: gunicorn --bind 0.0.0.0 backend.wsgi
 
-  # redis:
-  #   image: redis:7.2.3-alpine3.18
-  #   hostname: redis
+  redis:
+    image: redis:7.2.3-alpine3.18
+    hostname: redis
 
-  # worker:
-  #   build:
-  #     context: .
-  #   hostname: worker
-  #   entrypoint: celery
-  #   command: -A celerr.app worker --loglevel=info
-  #   volumes:
-  #     - ./backend/:/backend
-  #   links:
-  #     - redis
-  #   depends_on:
-  #     - redis
+  worker:
+    env_file: .env 
+    build: ./backend/
+    hostname: worker
+    # volumes:
+    #   - ./backend/:/backend
+    links:
+      - redis
+    depends_on:
+      - django_api
+      - redis
+    command: celery -A backend worker -l info

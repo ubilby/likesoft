@@ -3,9 +3,11 @@ from django.core.mail import send_mail
 
 
 @shared_task
-def token_to_email(email, user):
+def send_hello(email, user):
     send_mail(
+        'Greeting',
         f'Hello {user}',
+        'administrator@likesoft.ru',
         [email],
         fail_silently=False,
     )

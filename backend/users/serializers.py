@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .models import User
-from .utils import send_mail
+from .utils import send_hello
 
 
 class UserSerialiser(serializers.ModelSerializer):
@@ -11,6 +11,6 @@ class UserSerialiser(serializers.ModelSerializer):
 
     def create(self, validated_data):
         email = validated_data.get('email')
-        user = validated_data.get('user')
-        # send_mail.delay(email, user)
+        user = validated_data.get('username')
+        send_hello.delay(email, user)
         return super().create(validated_data)

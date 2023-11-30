@@ -10,4 +10,6 @@ RUN pip install -r requirements.txt --no-cache-dir
 
 COPY . .
 
-CMD ["gunicorn", "--bind", "0.0.0.0", "backend.wsgi"] 
+RUN python manage.py makemigrations
+
+RUN python manage.py migrate

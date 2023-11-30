@@ -20,9 +20,9 @@ services:
     volumes:
      - ./backend/:/backend
 
-  redis:
-    image: redis:7.2.3-alpine3.18
-    hostname: redis
+  # redis:
+  #   image: redis:7.2.3-alpine3.18
+  #   hostname: redis
 
   # worker:
   #   build:

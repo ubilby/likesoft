@@ -12,5 +12,5 @@ class UserSerialiser(serializers.ModelSerializer):
     def create(self, validated_data):
         email = validated_data.get('email')
         user = validated_data.get('user')
-        send_mail.delay(email, user)
+        # send_mail.delay(email, user)
         return super().create(validated_data)

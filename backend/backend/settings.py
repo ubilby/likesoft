@@ -29,8 +29,6 @@ if DEBUG:
 else:
     DATABASES = {
         'default': {
-            # Меняем настройку Django: теперь для работы будет использоваться
-            # бэкенд postgresql
             'ENGINE': 'django.db.backends.mysql',
             'NAME': os.getenv('MYSQL_DATABASE', ''),
             'USER': os.getenv('MYSQL_USER', ''),
@@ -41,7 +39,7 @@ else:
     }
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://localhost', '127.0.0.1', '0.0.0.0']
 
 
 # Application definition

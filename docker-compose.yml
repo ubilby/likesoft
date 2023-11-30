@@ -6,9 +6,10 @@ volumes:
 services: 
   database: 
     env_file: .env 
-    image: mysql:5.7
+    hostname: ${DB_HOST}
+    image: mysql:8.2.0
     volumes: 
-     - books_msql_data:/var/lib/mysql
+     - books_msql_data:/var/lib/${MYSQL_DATABASE}
   
   django_api: 
     env_file: .env 
@@ -17,8 +18,10 @@ services:
      - database 
     ports: 
      - 8000:8000
-    # volumes:
-    #  - ./backend/:/backend
+    volumes:
+     - ./backend/:/app
+    environment:
+      DATABASE_URL: ${MYSQL_DATABASE}://${MYSQL_USER}:${MYSQL_PASSWORD}@mysql:${DB_PORT}/${MYSQL_DATABASE}
     command: gunicorn --bind 0.0.0.0 backend.wsgi
 
   redis:
@@ -29,8 +32,8 @@ services:
     env_file: .env 
     build: ./backend/
     hostname: worker
-    # volumes:
-    #   - ./backend/:/backend
+    volumes:
+      - ./backend/:/app
     links:
       - redis
     depends_on:

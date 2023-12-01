@@ -22,7 +22,13 @@ services:
      - ./backend/:/app
     environment:
       DATABASE_URL: ${MYSQL_DATABASE}://${MYSQL_USER}:${MYSQL_PASSWORD}@mysql:${DB_PORT}/${MYSQL_DATABASE}
-    command: gunicorn --bind 0.0.0.0 backend.wsgi
+    command: >
+      bash -c "
+        until nc -z -v -w30 database ${DB_PORT} 2>/dev/null; do
+          echo 'Ожидание MySQL...'
+          sleep 2
+        done && python manage.py makemigrations && python manage.py migrate && gunicorn --bind 0.0.0.0 backend.wsgi
+      "
 
   redis:
     image: redis:7.2.3-alpine3.18

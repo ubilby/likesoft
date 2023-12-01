@@ -7,3 +7,4 @@ from .models import User
 class UserViewSet(ModelViewSet):
     serializer_class = UserSerialiser
     queryset = User.objects.all()
+    http_method_names = ['post']

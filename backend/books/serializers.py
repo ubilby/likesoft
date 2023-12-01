@@ -21,3 +21,10 @@ class BookSerializer(serializers.ModelSerializer):
                 "Такая книга уже существует!"
             )
         return data
+
+    def validate_isbn(self, value):
+        if len(value) != 13 or not value.isdigit():
+            raise serializers.ValidationError(
+                "Некорректный ISBN"
+            )
+        return value
